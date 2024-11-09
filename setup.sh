@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_REPO_URL="https://github.com/Ravi3727/CurseProgressDashboard.git"  
-SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/refs/heads/main/setup.sh"  # Ensure this points to the raw .sh file
+SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/main/setup.sh"  # Ensure this points to the raw .sh file
 
 # Set the directory where the repository will be cloned
 TARGET_DIR="CurseProgressDashboard"
@@ -12,9 +12,12 @@ if [ -d "$TARGET_DIR" ]; then
     rm -rf "$TARGET_DIR"
 fi
 
-# Clone the repository
+# Clone the repository into the newly created directory
 echo "Cloning repository from $PROJECT_REPO_URL..."
-git clone $PROJECT_REPO_URL . || { echo "Git clone failed!"; exit 1; }
+git clone $PROJECT_REPO_URL $TARGET_DIR || { echo "Git clone failed!"; exit 1; }
+
+# Change into the newly created directory
+cd $TARGET_DIR
 
 # Install dependencies
 echo "Installing dependencies..."
