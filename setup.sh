@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_REPO_URL="https://github.com/Ravi3727/CurseProgressDashboard.git"
-SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/main/setup.sh"  # Ensure this points to the raw .sh file
+SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/refs/heads/main/setup.sh"  # Ensure this points to the raw .sh file
 TARGET_DIR="CurseProgressDashboard"
 COMMAND_NAME="ravi_create_proj"
 COMMAND_FILE="/usr/local/bin/$COMMAND_NAME"  # Change to appropriate location if needed
