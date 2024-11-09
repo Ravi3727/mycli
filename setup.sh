@@ -46,18 +46,15 @@ install_project() {
 uninstall_project() {
     echo "Starting uninstallation..."
 
-    # Automatically detect the current directory
-    CURRENT_DIR=$(pwd)
+    # Get the name of the directory where the script was executed
+    TARGET_DIR=$(basename "$(pwd)")  # Get the current directory name (the project folder)
 
-    # Get the name of the current directory (the project folder name)
-    PROJECT_NAME=$(basename "$CURRENT_DIR")
-
-    # Remove the project directory if it exists
-    if [ -d "$PROJECT_NAME" ]; then
-        echo "Removing directory '$PROJECT_NAME'..."
-        rm -rf "$PROJECT_NAME" || { echo "Failed to remove $PROJECT_NAME"; exit 1; }
+    # Check if the directory exists in the current directory
+    if [ -d "$TARGET_DIR" ]; then
+        echo "Removing directory '$TARGET_DIR'..."
+        rm -rf "$TARGET_DIR" || { echo "Failed to remove $TARGET_DIR"; exit 1; }
     else
-        echo "Directory '$PROJECT_NAME' not found. Skipping removal."
+        echo "Directory '$TARGET_DIR' not found. Skipping removal."
     fi
 
     # Remove the global command if it exists
