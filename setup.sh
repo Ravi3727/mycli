@@ -1,19 +1,58 @@
 #!/bin/bash
 
-# Automatically detect the current directory
-CURRENT_DIR=$(pwd)
-
-# Get the name of the current directory (the project folder name)
-PROJECT_NAME=$(basename "$CURRENT_DIR")
-
+PROJECT_REPO_URL="https://github.com/Ravi3727/CurseProgressDashboard.git"
+SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/main/setup.sh"  # Ensure this points to the raw .sh file
 COMMAND_NAME="ravi_create_proj"
-COMMAND_FILE="/usr/local/bin/$COMMAND_NAME"  # Or use /c/Users/ASUS/bin/$COMMAND_NAME for Windows
+COMMAND_FILE="/usr/local/bin/$COMMAND_NAME"  # Change to appropriate location if needed
 
-# Function to uninstall the project and command
+# Function to install the project and command
+install_project() {
+    echo "Starting installation..."
+
+    # Automatically detect the current directory
+    CURRENT_DIR=$(pwd)
+
+    # Get the name of the current directory (the project folder name)
+    PROJECT_NAME=$(basename "$CURRENT_DIR")
+
+    # Check if the directory already exists
+    if [ -d "$PROJECT_NAME" ]; then
+        echo "Directory '$PROJECT_NAME' already exists, removing it..."
+        rm -rf "$PROJECT_NAME"
+    fi
+
+    # Clone the repository into the newly created directory
+    echo "Cloning repository from $PROJECT_REPO_URL..."
+    git clone $PROJECT_REPO_URL $PROJECT_NAME || { echo "Git clone failed!"; exit 1; }
+
+    # Change into the newly created directory
+    cd $PROJECT_NAME
+
+    # Install dependencies
+    echo "Installing dependencies..."
+    npm install || { echo "npm install failed!"; exit 1; }
+
+    # Set up a global command to run this setup script
+    echo "Setting up global command..."
+    echo "#!/bin/bash" > $COMMAND_FILE
+    echo "bash <(curl -s $SETUP_URL)" >> $COMMAND_FILE
+    chmod +x $COMMAND_FILE
+
+    # Completion message
+    echo "Installation complete! You can now use '$COMMAND_NAME' globally in any directory."
+}
+
+# Function to uninstall the project and global command
 uninstall_project() {
     echo "Starting uninstallation..."
 
-    # Remove the current project directory if it exists
+    # Automatically detect the current directory
+    CURRENT_DIR=$(pwd)
+
+    # Get the name of the current directory (the project folder name)
+    PROJECT_NAME=$(basename "$CURRENT_DIR")
+
+    # Remove the project directory if it exists
     if [ -d "$PROJECT_NAME" ]; then
         echo "Removing directory '$PROJECT_NAME'..."
         rm -rf "$PROJECT_NAME" || { echo "Failed to remove $PROJECT_NAME"; exit 1; }
@@ -32,9 +71,12 @@ uninstall_project() {
     echo "Uninstallation complete."
 }
 
-# Check if uninstall was requested
-if [ "$1" == "uninstall" ]; then
+# Check if the first argument is 'install' or 'uninstall'
+if [ "$1" == "install" ]; then
+    install_project
+elif [ "$1" == "uninstall" ]; then
     uninstall_project
 else
-    echo "Invalid argument. To uninstall, use: bash setup.sh uninstall"
+    echo "Usage: $0 [install|uninstall]"
+    exit 1
 fi
