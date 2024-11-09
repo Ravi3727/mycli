@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_REPO_URL="https://github.com/Ravi3727/CurseProgressDashboard.git"  
-SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/main/setup.sh"  # Ensure this points to the raw .sh file
+SETUP_URL="https://raw.githubusercontent.com/Ravi3727/mycli/refs/heads/main/setup.sh"  # Ensure this points to the raw .sh file
 
 # Set the directory where the repository will be cloned
 TARGET_DIR="CurseProgressDashboard"
